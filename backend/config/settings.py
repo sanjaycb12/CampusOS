@@ -135,3 +135,4 @@ SIMPLE_JWT = {
         timedelta(days=7),
 
 }
+AUTH_USER_MODEL = 'accounts.User'
