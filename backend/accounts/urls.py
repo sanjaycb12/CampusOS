@@ -2,7 +2,7 @@ from django.urls import path
 
 from .views import (
     StudentListAPIView,
-    StudentDetailAPIView
+    StudentDetailAPIView,ProfileAPIView
 )
 
 urlpatterns = [
@@ -17,6 +17,10 @@ urlpatterns = [
         'students/<int:pk>/',
         StudentDetailAPIView.as_view(),
         name='student-detail'
+    ),
+    path(
+        'profile/',
+        ProfileAPIView.as_view()
     ),
 
 ]

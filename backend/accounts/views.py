@@ -4,11 +4,14 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from .models import Student
 from .serializers import StudentSerializer
-from rest_framework.permissions import IsAuthenticated 
-
+from .permissions import (
+    IsAdmin,
+    IsFaculty,
+    IsStudent
+)
 class StudentListAPIView(APIView):
 
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated,IsAdmin]
 
     def get(self, request):
 
@@ -40,7 +43,7 @@ class StudentListAPIView(APIView):
             status=status.HTTP_400_BAD_REQUEST
         )
 class StudentDetailAPIView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated,IsAdmin]
 
     def get(self, request, pk):
 
@@ -67,15 +70,10 @@ class StudentDetailAPIView(APIView):
 
             serializer.save()
 
-            return Response(serializer.data)
-
-        return Response(
-
-            serializer.errors,
-
-            status=400
-
-        )
+            return Response(
+    serializer.errors,
+    status=status.HTTP_400_BAD_REQUEST
+)
     def delete(self, request, pk):
 
       student = Student.objects.get(pk=pk)
@@ -86,6 +84,28 @@ class StudentDetailAPIView(APIView):
 
         {"message": "Student deleted successfully"},
 
-        status=204
+       status=status.HTTP_204_NO_CONTENT
 
     )
+class ProfileAPIView(APIView):
+
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+
+        user = request.user
+
+        groups = [
+            group.name
+            for group in user.groups.all()
+        ]
+
+        return Response({
+
+            "username": user.username,
+
+            "email": user.email,
+
+            "groups": groups
+
+        })
