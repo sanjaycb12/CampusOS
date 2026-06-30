@@ -16,4 +16,4 @@ class IsFaculty(BasePermission):
 class IsStudent(BasePermission):
 
     def has_permission(self, request, view):
-        return request.user.groups.filter(name='Student').exists()
+        return request.user.groups.filter(name='student').exists()

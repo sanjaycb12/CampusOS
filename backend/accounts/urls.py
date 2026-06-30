@@ -1,6 +1,7 @@
 from django.urls import path
 
 from .views import (
+    FacultyDashboardAPIView,
     StudentListAPIView,
     StudentDetailAPIView,ProfileAPIView
 )
@@ -22,5 +23,9 @@ urlpatterns = [
         'profile/',
         ProfileAPIView.as_view()
     ),
+    path(
+    'faculty/',
+        FacultyDashboardAPIView.as_view()
+),
 
 ]

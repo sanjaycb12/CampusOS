@@ -106,6 +106,26 @@ class ProfileAPIView(APIView):
 
             "email": user.email,
 
-            "groups": groups
+            "groups": [
+                g.name
+                for g in user.groups.all()
+            ]
 
         })
+class FacultyDashboardAPIView(APIView):
+
+    permission_classes = [
+        IsAuthenticated,
+        IsFaculty
+    ]
+
+    def get(self, request):
+
+        students = Student.objects.all()
+
+        serializer = StudentSerializer(
+            students,
+            many=True
+        )
+
+        return Response(serializer.data)
